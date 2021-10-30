@@ -1,0 +1,25 @@
+syntax = "proto3";
+package auth.server;
+
+option go_package = "pb/;pb";
+option java_package = "cn.bk.frames.devplatform.client.auth.server.grpc";
+option java_outer_classname = "RpcAuthServerInterface";
+
+//import "google/protobuf/any.proto";
+import "google/protobuf/wrappers.proto";
+import "google/protobuf/empty.proto";
+
+// 认证业务
+service AuthService {
+  // 认证传入加密串，返回加密用户信息
+  rpc auth(google.protobuf.StringValue) returns (google.protobuf.StringValue);
+}
+
+service PermissionsOperationService {
+  // 返回权限对应的json字符串
+  rpc queryAllPermissions(google.protobuf.Empty) returns (stream google.protobuf.StringValue);
+  // 推送权限
+  rpc pushPermissions(stream google.protobuf.StringValue) returns (google.protobuf.Empty);
+  // 删除权限信息
+  rpc deletePermissions(google.protobuf.StringValue) returns (google.protobuf.Empty);
+}
