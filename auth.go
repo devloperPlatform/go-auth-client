@@ -11,6 +11,7 @@ import (
 	"github.com/devloperPlatform/go-auth-client/pb"
 	"github.com/devloperPlatform/go-base-utils/commonvos"
 	"github.com/devloperPlatform/go-coder-utils/coder"
+	"github.com/gin-gonic/gin"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/types/known/wrapperspb"
@@ -115,6 +116,10 @@ func (this *Service) AuthAndResToUserInfo(userToken string) (*commonvos.InsideUs
 		return nil, errors.New("转换用户信息失败: " + err.Error())
 	}
 	return userInfo, nil
+}
+
+func (this *Service) GinMiddle(engine *gin.Engine) *GinAuthExtend {
+	return NewGinAuthExtend(engine)
 }
 
 func convertGrpcErr2Err(err error) error {
