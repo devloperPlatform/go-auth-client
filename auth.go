@@ -118,8 +118,8 @@ func (this *Service) AuthAndResToUserInfo(userToken string) (*commonvos.InsideUs
 	return userInfo, nil
 }
 
-func (this *Service) GinMiddle(engine *gin.Engine) *GinAuthExtend {
-	return NewGinAuthExtend(engine)
+func (this *Service) GinMiddle(engine *gin.Engine, userTokenHeaderName string) *GinAuthExtend {
+	return NewGinAuthExtend(engine, userTokenHeaderName, this)
 }
 
 func convertGrpcErr2Err(err error) error {
