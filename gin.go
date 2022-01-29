@@ -47,7 +47,7 @@ func (this *GinAuthExtend) middle() gin.HandlerFunc {
 	return func(context *gin.Context) {
 		logs.Debugln("进入鉴权拦截器, 将要被鉴权的路径: ", context.Request.RequestURI)
 		if this.ignoreFn != nil {
-			if !this.ignoreFn(context) {
+			if this.ignoreFn(context) {
 				goto BreakIgnore
 			}
 		}
