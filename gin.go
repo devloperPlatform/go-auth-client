@@ -77,9 +77,14 @@ func (this *GinAuthExtend) middle() gin.HandlerFunc {
 
 func (this *GinAuthExtend) Wrapper(fn UserAuthFun) func(ctx *gin.Context) {
 	return func(ctx *gin.Context) {
+		if _, exists := ctx.Get("ignore"); exists {
+			fn(nil, ctx)
+			return
+		}
 		nowUserInfo, exists := ctx.Get("nowUser")
 		if !exists {
 			ctx.JSON(401, "获取用户信息失败")
+			return
 		}
 
 		if info, ok := nowUserInfo.(commonvos.InsideUserInfo); ok {
