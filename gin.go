@@ -15,6 +15,7 @@ type GinAuthExtend struct {
 	userTokenHeaderName string
 	authService         *Service
 	ignoreUrl           map[string]bool
+	ignoreFn            func(context *gin.Context) bool
 }
 
 func NewGinAuthExtend(engine *gin.Engine, userTokenHeaderName string, authService *Service) *GinAuthExtend {
@@ -33,6 +34,11 @@ func (this *GinAuthExtend) IgnoreUrl(url string) *GinAuthExtend {
 	return this
 }
 
+func (this *GinAuthExtend) IgnoreFn(fn func(context *gin.Context) bool) *GinAuthExtend {
+	this.ignoreFn = fn
+	return this
+}
+
 func (this *GinAuthExtend) init() {
 	this.engine.Use(this.middle())
 }
@@ -40,12 +46,19 @@ func (this *GinAuthExtend) init() {
 func (this *GinAuthExtend) middle() gin.HandlerFunc {
 	return func(context *gin.Context) {
 		logs.Debugln("进入鉴权拦截器, 将要被鉴权的路径: ", context.Request.RequestURI)
-		if _, ok := this.ignoreUrl[context.Request.URL.Path]; ok {
-			logs.Debugln("检测到该路径为忽略权限路径, 跳过权限认证")
-			context.Set("ignore", true)
-			context.Next()
-			return
+		if this.ignoreFn != nil {
+			if !this.ignoreFn(context) {
+				goto BreakIgnore
+			}
 		}
+		if _, ok := this.ignoreUrl[context.Request.URL.Path]; !ok {
+			goto BreakIgnore
+		}
+		logs.Debugln("检测到该路径为忽略权限路径, 跳过权限认证")
+		context.Set("ignore", true)
+		context.Next()
+		return
+	BreakIgnore:
 		userToken := context.GetHeader(this.userTokenHeaderName)
 		if userToken == "" {
 			logs.Debugln("获取客户端用户Token失败")
