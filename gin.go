@@ -42,6 +42,7 @@ func (this *GinAuthExtend) middle() gin.HandlerFunc {
 		logs.Debugln("进入鉴权拦截器, 将要被鉴权的路径: ", context.Request.RequestURI)
 		if _, ok := this.ignoreUrl[context.Request.RequestURI]; ok {
 			logs.Debugln("检测到该路径为忽略权限路径, 跳过权限认证")
+			context.Set("ignore", true)
 			context.Next()
 			return
 		}
