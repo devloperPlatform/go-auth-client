@@ -13,6 +13,7 @@ type UserAuthFun func(user *commonvos.InsideUserInfo, ctx *gin.Context)
 type GinAuthExtend struct {
 	engine              *gin.Engine
 	userTokenHeaderName string
+	tokenGetFn          func(ctx *gin.Context) string
 	authService         *Service
 	ignoreUrl           map[string]bool
 	ignoreFn            func(context *gin.Context) bool
@@ -39,6 +40,11 @@ func (this *GinAuthExtend) IgnoreFn(fn func(context *gin.Context) bool) *GinAuth
 	return this
 }
 
+func (this *GinAuthExtend) TokenGetFn(fn func(ctx *gin.Context) string) *GinAuthExtend {
+	this.tokenGetFn = fn
+	return this
+}
+
 func (this *GinAuthExtend) init() {
 	this.engine.Use(this.middle())
 }
@@ -62,7 +68,12 @@ func (this *GinAuthExtend) middle() gin.HandlerFunc {
 		context.Next()
 		return
 	BreakIgnore:
-		userToken := context.GetHeader(this.userTokenHeaderName)
+		var userToken string
+		if this.tokenGetFn != nil {
+			userToken = this.tokenGetFn(context)
+		} else {
+			userToken = context.GetHeader(this.userTokenHeaderName)
+		}
 		if userToken == "" {
 			logs.Debugln("获取客户端用户Token失败")
 			context.JSON(401, &gin.H{

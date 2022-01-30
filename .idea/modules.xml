@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/02-golang.iml" filepath="$PROJECT_DIR$/.idea/02-golang.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/go-auth-client.iml" filepath="$PROJECT_DIR$/.idea/go-auth-client.iml" />
     </modules>
   </component>
 </project>
