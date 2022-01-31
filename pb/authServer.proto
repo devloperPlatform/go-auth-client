@@ -22,4 +22,6 @@ service PermissionsOperationService {
   rpc pushPermissions(stream google.protobuf.StringValue) returns (google.protobuf.Empty);
   // 删除权限信息
   rpc deletePermissions(google.protobuf.StringValue) returns (google.protobuf.Empty);
+  // 清空所有权限
+  rpc clearAllPermissions(google.protobuf.Empty) returns (google.protobuf.Empty);
 }

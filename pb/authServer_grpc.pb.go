@@ -114,6 +114,8 @@ type PermissionsOperationServiceClient interface {
 	PushPermissions(ctx context.Context, opts ...grpc.CallOption) (PermissionsOperationService_PushPermissionsClient, error)
 	// 删除权限信息
 	DeletePermissions(ctx context.Context, in *wrapperspb.StringValue, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	// 清空所有权限
+	ClearAllPermissions(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*emptypb.Empty, error)
 }
 
 type permissionsOperationServiceClient struct {
@@ -199,6 +201,15 @@ func (c *permissionsOperationServiceClient) DeletePermissions(ctx context.Contex
 	return out, nil
 }
 
+func (c *permissionsOperationServiceClient) ClearAllPermissions(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*emptypb.Empty, error) {
+	out := new(emptypb.Empty)
+	err := c.cc.Invoke(ctx, "/auth.server.PermissionsOperationService/clearAllPermissions", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // PermissionsOperationServiceServer is the server API for PermissionsOperationService service.
 // All implementations must embed UnimplementedPermissionsOperationServiceServer
 // for forward compatibility
@@ -209,6 +220,8 @@ type PermissionsOperationServiceServer interface {
 	PushPermissions(PermissionsOperationService_PushPermissionsServer) error
 	// 删除权限信息
 	DeletePermissions(context.Context, *wrapperspb.StringValue) (*emptypb.Empty, error)
+	// 清空所有权限
+	ClearAllPermissions(context.Context, *emptypb.Empty) (*emptypb.Empty, error)
 	mustEmbedUnimplementedPermissionsOperationServiceServer()
 }
 
@@ -224,6 +237,9 @@ func (UnimplementedPermissionsOperationServiceServer) PushPermissions(Permission
 }
 func (UnimplementedPermissionsOperationServiceServer) DeletePermissions(context.Context, *wrapperspb.StringValue) (*emptypb.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method DeletePermissions not implemented")
+}
+func (UnimplementedPermissionsOperationServiceServer) ClearAllPermissions(context.Context, *emptypb.Empty) (*emptypb.Empty, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ClearAllPermissions not implemented")
 }
 func (UnimplementedPermissionsOperationServiceServer) mustEmbedUnimplementedPermissionsOperationServiceServer() {
 }
@@ -304,6 +320,24 @@ func _PermissionsOperationService_DeletePermissions_Handler(srv interface{}, ctx
 	return interceptor(ctx, in, info, handler)
 }
 
+func _PermissionsOperationService_ClearAllPermissions_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(emptypb.Empty)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PermissionsOperationServiceServer).ClearAllPermissions(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/auth.server.PermissionsOperationService/clearAllPermissions",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PermissionsOperationServiceServer).ClearAllPermissions(ctx, req.(*emptypb.Empty))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // PermissionsOperationService_ServiceDesc is the grpc.ServiceDesc for PermissionsOperationService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -314,6 +348,10 @@ var PermissionsOperationService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "deletePermissions",
 			Handler:    _PermissionsOperationService_DeletePermissions_Handler,
+		},
+		{
+			MethodName: "clearAllPermissions",
+			Handler:    _PermissionsOperationService_ClearAllPermissions_Handler,
 		},
 	},
 	Streams: []grpc.StreamDesc{
