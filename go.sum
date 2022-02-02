@@ -18,6 +18,8 @@ github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSs
 github.com/denisenkom/go-mssqldb v0.0.0-20191124224453-732737034ffd/go.mod h1:xbL0rPBG9cCiLr28tMa8zpbdarY27NDyej4t/EjAShU=
 github.com/devloperPlatform/go-base-utils v0.0.0-20210728090414-3f59409468cf h1:xRxFtgdzRCnxdHhtzEhrvQ1XOY34M0dwOXOvMJPwF58=
 github.com/devloperPlatform/go-base-utils v0.0.0-20210728090414-3f59409468cf/go.mod h1:qrsWwsGwHzdRoYCN4EzfIXwt2XYOaTTgCQCFFr5muAQ=
+github.com/devloperPlatform/go-base-utils v0.0.0-20220202030337-ed8bfac78b64 h1:fsgZeiRXvehrF5yV+tBRAmTyF0V1FjQJWXBZRxseG4M=
+github.com/devloperPlatform/go-base-utils v0.0.0-20220202030337-ed8bfac78b64/go.mod h1:j4gHJkBY6ryyqtakj17SlMKYYUDqHl3KV/bwZoe24W4=
 github.com/devloperPlatform/go-coder-utils v0.0.0-20210612171421-85248a1825b8 h1:ySh8KDY9umhj7K7Nl18KkngEyF6et9ydyPiu2gUO/O0=
 github.com/devloperPlatform/go-coder-utils v0.0.0-20210612171421-85248a1825b8/go.mod h1:OYw6J2BrDyXEofn5Or8ycBAoDpc4T5+QtzQWUS/VWW0=
 github.com/envoyproxy/go-control-plane v0.9.0/go.mod h1:YTl/9mNaCwkRvm6d1a2C3ymFceY/DCBVvsKhRF0iEA4=
